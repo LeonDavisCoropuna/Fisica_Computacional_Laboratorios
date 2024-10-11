@@ -3,17 +3,15 @@ from tkinter import messagebox
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Función para calcular velocidad y órbita
 def calcular_orbita():
     try:
-        d = float(entry_distancia.get())
-        t = float(entry_tiempo.get())
-        velocidad = d / t
-        messagebox.showinfo("Resultado", f"Velocidad: {velocidad:.2f} m/s")
+        r = float(entry_radio.get())  # Radio en metros
+        T = float(entry_periodo.get())  # Período en segundos
+        velocidad = (2 * np.pi * r) / T  # Cálculo de la velocidad orbital
+        messagebox.showinfo("Resultado", f"Velocidad orbital: {velocidad:.2f} m/s")
     except ValueError:
         messagebox.showerror("Error", "Por favor ingresa valores válidos.")
 
-# Función para calcular fuerza y graficar
 def calcular_fuerza():
     try:
         m = float(entry_masa.get())
@@ -26,7 +24,6 @@ def calcular_fuerza():
         
         messagebox.showinfo("Resultado", f"Fuerza: {fuerza:.2f} N")
         
-        # Graficar el cambio de velocidad
         tiempos = np.linspace(0, t, 100)
         velocidades = vi + a * tiempos
         
@@ -43,18 +40,16 @@ def calcular_fuerza():
     except ValueError:
         messagebox.showerror("Error", "Por favor ingresa valores válidos.")
 
-# Crear la ventana principal
 root = tk.Tk()
 root.title("Cálculos de Física")
 
-# Entradas para MRU
-tk.Label(root, text="Distancia (m):").grid(row=0, column=0)
-entry_distancia = tk.Entry(root)
-entry_distancia.grid(row=0, column=1)
+tk.Label(root, text="Radio de la órbita (m):").grid(row=0, column=0)
+entry_radio = tk.Entry(root)
+entry_radio.grid(row=0, column=1)
 
-tk.Label(root, text="Tiempo (s):").grid(row=1, column=0)
-entry_tiempo = tk.Entry(root)
-entry_tiempo.grid(row=1, column=1)
+tk.Label(root, text="Período orbital (s):").grid(row=1, column=0)
+entry_periodo = tk.Entry(root)
+entry_periodo.grid(row=1, column=1)
 
 tk.Button(root, text="Calcular Velocidad Orbital", command=calcular_orbita).grid(row=2, columnspan=2)
 
@@ -77,5 +72,4 @@ entry_tiempo_fuerza.grid(row=6, column=1)
 
 tk.Button(root, text="Calcular Fuerza", command=calcular_fuerza).grid(row=7, columnspan=2)
 
-# Ejecutar la interfaz
 root.mainloop()
