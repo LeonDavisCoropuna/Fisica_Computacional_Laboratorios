@@ -27,36 +27,52 @@ def calcular_y_graficar():
         energia_cinetica = []
         energia_potencial = []
         energia_mecanica = []
+        energia_potencial_vs_altura = []
 
         # Cálculos de la energía en cada instante de tiempo
         for i in range(pasos):
+            # Calculamos la altura en cada instante
             altura = h_inicial - (1 / 2) * g * t[i] ** 2  # Ecuación de caída libre
-            velocidad = v_inicial - g * t[i]               # Velocidad de caída
+            if altura < 0:  # Limitar la altura a 0 si pasa por debajo del suelo
+                altura = 0
+            velocidad = v_inicial - g * t[i]  # Velocidad en cada instante
 
-            # Calculamos EK y EP
+            # Energía cinética y potencial
             EK = 0.5 * masa * velocidad ** 2
-            EP = masa * g * max(0, altura)  # Asegurarse de no tener altura negativa en caída libre
+            EP = masa * g * altura  # Energía potencial con altura positiva
 
-            # Calculamos Em
+            # Energía mecánica
             em = EK + EP
 
             # Guardamos los valores en las listas
             energia_cinetica.append(EK)
             energia_potencial.append(EP)
             energia_mecanica.append(em)
+            energia_potencial_vs_altura.append(EP)
 
         # Graficar los resultados
-        plt.figure()
+        plt.figure(figsize=(12, 6))
+
+        # Energía en función del tiempo
+        plt.subplot(1, 2, 1)
         plt.plot(t, energia_cinetica, label='Energía Cinética (EK)', color='blue')
         plt.plot(t, energia_potencial, label='Energía Potencial (EP)', color='red')
         plt.plot(t, energia_mecanica, label='Energía Mecánica Total (Em)', color='green', linestyle='--')
-
-        # Configuraciones de la gráfica
         plt.xlabel('Tiempo (s)')
         plt.ylabel('Energía (J)')
         plt.title('Conservación de la Energía Mecánica')
         plt.legend()
         plt.grid(True)
+
+        # Energía potencial en función de la altura
+        plt.subplot(1, 2, 2)
+        plt.plot(t, energia_potencial_vs_altura, label='Energía Potencial vs Altura', color='purple')
+        plt.xlabel('Tiempo (s)')
+        plt.ylabel('Energía Potencial (J)')
+        plt.title('Energía Potencial vs Altura')
+        plt.grid(True)
+
+        plt.tight_layout()
         plt.show()
 
     except ValueError:
